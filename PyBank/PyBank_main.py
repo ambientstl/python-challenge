@@ -66,15 +66,21 @@ with open(pyBank_csv, 'r') as pyBankData:
     #calculates average monthly change 
     avgMonthChange = sum(monthlyChanges) / len(monthlyChanges)
 
+    #truncate all but 2 decimals in average monthly change
+    avgMonthChange = float('%.2f'%(avgMonthChange))
     
     if avgMonthChange < 0:
         print(f"Average Monthly Change: -${abs(avgMonthChange)}")
     else:
         print(f"Average Monthly Change: ${avgMonthChange}")
 
-
-    
-
-        
-
-
+#write text doc with results
+bankDocument = open('financial_analysis.txt','w')
+bankDocument.write(f"""Financial Analysis 
+------------------
+Total Months: {totalMonths}
+Total Profit: ${totalProfit}
+Greatest Monthly Profit: ${greatIncrease}
+Greatest Monthly Loss: ${greatDecrease}
+Average Monthly Change: ${avgMonthChange}""")
+bankDocument.close()
