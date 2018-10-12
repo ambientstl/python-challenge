@@ -38,17 +38,20 @@ with open(pyPoll_csv, 'r') as pyPollData:
         if not candidate in candidates:
             candidates.append(candidate)
 
-#calculate % of votes per candidate            
-votePerc0 = election[candidates[0]] / totalVotes
-votePerc1 = election[candidates[1]] / totalVotes
-votePerc2 = election[candidates[2]] / totalVotes
-votePerc3 = election[candidates[3]] / totalVotes
+#set empty lists for vote %s and candidate data
+votePerc = []
+candidateData = []
 
-#format votePercs as %
-votePerc0 = format(votePerc0, ".3%")
-votePerc1 = format(votePerc1, ".3%")
-votePerc2 = format(votePerc2, ".3%")
-votePerc3 = format(votePerc3, ".3%")
+#cycle through candidate list and calculate % of votes per candidate
+for i in range(len(candidates)):
+    #add vote % to list
+    votePerc.append(election[candidates[i]] / totalVotes)
+
+    #format votePerc as %
+    votePerc[i] = format(votePerc[i], ".3%")
+
+    #add candidate data to list
+    candidateData.append(f"{candidates[i]}: {votePerc[i]} ({election[candidates[i]]}) \n")
 
 ##determine winner
 #set baseline for winning vote count and candidate
@@ -64,11 +67,9 @@ for i in candidates:
 print("Election Results")       
 print("----------------")
 print(f"Total Votes: {totalVotes}")
-print("----------------")
-print(f"{candidates[0]}: {votePerc0} ({election[candidates[0]]})")
-print(f"{candidates[1]}: {votePerc1} ({election[candidates[1]]})")
-print(f"{candidates[2]}: {votePerc2} ({election[candidates[2]]})")
-print(f"{candidates[3]}: {votePerc3} ({election[candidates[3]]})")
+print("---------------- \n")
+for i in range(len(candidates)):
+    print(f"{candidateData[i]}")
 print("----------------")
 print(f"Winner: {winningCandidate}")
 
@@ -77,11 +78,8 @@ electionDocument = open('election_results.txt','w')
 electionDocument.write(f"""Election Results 
 ---------------- 
 Total Votes: {totalVotes} 
----------------- 
-{candidates[0]}: {votePerc0} ({election[candidates[0]]}) 
-{candidates[1]}: {votePerc1} ({election[candidates[1]]}) 
-{candidates[2]}: {votePerc2} ({election[candidates[2]]}) 
-{candidates[3]}: {votePerc3} ({election[candidates[3]]}) 
----------------- 
+---------------- \n""") 
+electionDocument.writelines(candidateData)
+electionDocument.write(f"""---------------- 
 Winner: {winningCandidate}""")
 electionDocument.close()
